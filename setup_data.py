@@ -18,18 +18,35 @@ else:
     company = Company.objects.create(name="Empresa Demo")
     print(f"✓ Empresa creada: {company.name}")
 
-# Crear usuario admin
-if not User.objects.filter(username='admin').exists():
-    user = User.objects.create_superuser(
-        username='admin',
-        email='admin@demo.com',
-        password='admin123',
+# Crear usuario superadmin (admin@sdp.com)
+if not User.objects.filter(email='admin@sdp.com').exists():
+    superadmin = User.objects.create_superuser(
+        username='admin_superadmin_1773338741',
+        email='admin@sdp.com',
+        password='Apice2024!',
+        company=company,
+        is_superadmin=True
+    )
+    print(f"✓ Superadmin creado (email: admin@sdp.com, password: Apice2024!)")
+else:
+    superadmin = User.objects.get(email='admin@sdp.com')
+    print(f"✓ Superadmin ya existe (admin@sdp.com)")
+
+# Crear usuario regular (martindesia@hotmail.com)
+if not User.objects.filter(email='martindesia@hotmail.com').exists():
+    regular_user = User.objects.create_user(
+        username='martindesia',
+        email='martindesia@hotmail.com',
+        password='Apice2024!',
         company=company
     )
-    print(f"✓ Usuario admin creado (username: admin, password: admin123)")
+    print(f"✓ Usuario regular creado (email: martindesia@hotmail.com, password: Apice2024!)")
 else:
-    user = User.objects.get(username='admin')
-    print(f"✓ Usuario admin ya existe")
+    regular_user = User.objects.get(email='martindesia@hotmail.com')
+    print(f"✓ Usuario regular ya existe (martindesia@hotmail.com)")
+
+# Usar superadmin como owner para datos de prueba
+user = superadmin
 
 # Crear etapas del pipeline si no existen
 if not Stage.objects.filter(company=company).exists():
@@ -167,7 +184,8 @@ else:
 print("\n✅ Configuración completada!")
 print(f"\n📊 Resumen:")
 print(f"   - Empresa: {company.name}")
-print(f"   - Usuario: admin / admin123")
+print(f"   - Superadmin: admin@sdp.com / Apice2024!")
+print(f"   - Usuario regular: martindesia@hotmail.com / Apice2024!")
 print(f"   - Contactos: {Contact.objects.filter(company=company).count()}")
 print(f"   - Etapas: {Stage.objects.filter(company=company).count()}")
 print(f"   - Oportunidades: {Deal.objects.filter(company=company).count()}")
