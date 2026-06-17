@@ -50,12 +50,20 @@ class Company(models.Model):
     province = models.CharField(max_length=50, blank=True, default='', verbose_name='Provincia')
     ml_commission_rate = models.DecimalField(max_digits=5, decimal_places=2, default=13, verbose_name='Comisión ML (%)', help_text='Porcentaje estimado de comisión de MercadoLibre')
 
+    class Meta:
+        verbose_name = 'Empresa'
+        verbose_name_plural = 'Empresas'
+        ordering = ['name']
+
     def save(self, *args, **kwargs):
         if not self.api_key:
             self.api_key = uuid.uuid4().hex
         super().save(*args, **kwargs)
 
     def __str__(self):
+        # Prefiere mostrar 'codigo - name' si hay codigo, sino solo name.
+        if self.codigo:
+            return f"{self.codigo} - {self.name}"
         return self.name
 
 class User(AbstractUser):
