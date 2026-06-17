@@ -51,6 +51,7 @@ class Company(models.Model):
     ml_commission_rate = models.DecimalField(max_digits=5, decimal_places=2, default=13, verbose_name='Comisión ML (%)', help_text='Porcentaje estimado de comisión de MercadoLibre')
 
     class Meta:
+        db_table = 'empresa'
         verbose_name = 'Empresa'
         verbose_name_plural = 'Empresas'
         ordering = ['name']
